@@ -15,7 +15,6 @@ class MyPosts extends PureComponent {
     }
 
     render() {
-        console.log("Render");
         return (
             <div>
                 <div>
