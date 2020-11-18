@@ -1,0 +1,17 @@
+.nav {
+    grid-area: N;
+    background-color: chartreuse;
+    color: white;
+    font-weight: 700;
+    font-size: x-large;
+    padding: 20px;
+  }
+
+  .nav a.active {
+     color: gold;
+  }
+
+  .nav a {
+     color: white;
+     text-decoration: none;
+  }

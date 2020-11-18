@@ -1,0 +1,7 @@
+.item {
+  color: gold;
+}  
+.item img {
+  height: 100px;
+  border-radius: 30px;
+}
