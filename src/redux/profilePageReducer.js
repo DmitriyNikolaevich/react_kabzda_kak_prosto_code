@@ -120,4 +120,14 @@ export const savePhotoThunk = (file) => {
   }
 };
 
+export const saveProfileDataThunk = (profileData) => {
+  return async (dispatch, getState) => {
+    let response = await profileAPI.saveProfileData(profileData);
+    const userID = getState().auth.userId;
+    if (response.data.resultCode === 0) {
+      dispatch(getUserThunk(userID));
+    };
+  }
+};
+
 export default profilePageReducer;

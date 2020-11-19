@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import s from './Profile.module.css';
 import Profile from './Profile';
-import { setUserProfile, getUserThunk, getUserStatusThunk, updateUserStatusThunk, savePhotoThunk } from '../../redux/profilePageReducer';
+import { setUserProfile, getUserThunk, getUserStatusThunk, updateUserStatusThunk, savePhotoThunk, saveProfileDataThunk } from '../../redux/profilePageReducer';
 import { withRouter } from 'react-router-dom';
 import withAuthRedirect from '../../hoc/withAuthRedirect';
 import { compose } from 'redux';
@@ -51,4 +51,4 @@ let mapStateToProps = (state) => {
     }
 };
 
-export default compose( connect(mapStateToProps, {setUserProfile, getUserThunk, getUserStatusThunk, updateUserStatusThunk, savePhotoThunk}), withRouter, withAuthRedirect )(ProfileContainer); 
+export default compose( connect(mapStateToProps, {setUserProfile, getUserThunk, getUserStatusThunk, updateUserStatusThunk, savePhotoThunk, saveProfileDataThunk}), withRouter, withAuthRedirect )(ProfileContainer); 
