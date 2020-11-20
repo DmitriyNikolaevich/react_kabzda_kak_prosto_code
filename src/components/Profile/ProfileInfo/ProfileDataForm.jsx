@@ -3,10 +3,13 @@ import { reduxForm } from 'redux-form';
 import { createField, Input, Textarea } from '../../common/FormControls/FormControls';
 import Contact from './Contact';
 
-const Form = ({fullName, lookingForAJob, lookingForAJobDescription, aboutMe, contacts, handleSubmit, deactivateEditMode}) => {
+const Form = ({lookingForAJob, contacts, handleSubmit, error}) => {
     return (
         <form onSubmit={handleSubmit}>
             <button>Save profile data</button>
+            {error &&   <div>
+                            {error}
+                        </div>}
             <div>
                 <b>Full name</b>: {createField("Full name", "fullName", [], Input)}.
             </div>
@@ -23,7 +26,7 @@ const Form = ({fullName, lookingForAJob, lookingForAJobDescription, aboutMe, con
                 <b>About me</b>: {createField("About me", "aboutMe", [], Textarea)}
             </div>
             <div>
-                <b>Contacts</b>: {Object.keys(contacts).map(key => { return <Contact key={key} contactTitle={key} contactDescription={createField(`Write ${key} account`, "contactDescription", [], Input)} /> })}
+                <b>Contacts</b>: {Object.keys(contacts).map(key => { return <Contact unicKey={key} contactTitle={key} contactDescription={createField(`Write ${key} account`, "contacts." + key, [], Input)} /> })}
             </div>
         </form>
     )

@@ -1,9 +1,9 @@
 import React from 'react';
 import s from './Contact.module.css';
 
-const Contact = ({contactTitle, contactDescription}) => {
+const Contact = ({unicKey, contactTitle, contactDescription}) => {
     return (
-        <div className={s.contact}>
+        <div key={unicKey} className={s.contact}>
             <b>{contactTitle}</b>: {contactDescription}
         </div>
     )

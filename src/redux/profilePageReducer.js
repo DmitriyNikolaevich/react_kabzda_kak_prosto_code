@@ -1,3 +1,4 @@
+import { stopSubmit } from "redux-form";
 import { profileAPI } from "../API";
 
 const WRITE_WORDS = 'WRITE-WORDS';
@@ -126,7 +127,10 @@ export const saveProfileDataThunk = (profileData) => {
     const userID = getState().auth.userId;
     if (response.data.resultCode === 0) {
       dispatch(getUserThunk(userID));
-    };
+    } else {
+      dispatch(stopSubmit("profileDataForm", {_error: response.data.messages[0]}));
+      return Promise.reject(response.data.messages[0]);
+    }
   }
 };
 
