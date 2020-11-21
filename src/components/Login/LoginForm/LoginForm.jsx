@@ -1,37 +1,24 @@
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { maxLenghtCreator, requiredFild } from '../../../utils/validators/validators';
-import { Input } from '../../common/FormControls/FormControls';
+import Captcha from '../../common/Captcha/Captcha';
+import { createField, Input } from '../../common/FormControls/FormControls';
 
 let maxLenght = maxLenghtCreator(30);
 
-const LoginForm = (props) => {
+const LoginForm = ({captchaURL, handleSubmit}) => {
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div>
-                <Field placeholder={"Login"}
-                        component={Input}
-                        name={"email"}
-                        validate={[
-                            requiredFild,
-                            maxLenght
-                        ]}
-                        />
+                {createField("Login", "email", [ requiredFild, maxLenght ], Input)}
             </div>
             <div>
-                <Field placeholder={"Password"}
-                        component={Input}
-                        name={"password"}
-                        validate={[
-                            requiredFild,
-                            maxLenght
-                        ]}
-                        type={"password"}
-                         />
+                {createField("Password", "password", [ requiredFild, maxLenght ], Input, {type: "password"})}
             </div>
             <div>
-                <Field type={"checkbox"} component={Input} name={"rememberMe"} /> Remember me
+                {createField("", "rememberMe", [], Input, {type: "checkbox"})} Remember me
             </div>
+            {captchaURL && <Captcha captchaURL={captchaURL} />}
             <div>
                 <button>Login</button>
             </div>
