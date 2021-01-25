@@ -7,14 +7,14 @@ type InitialStateActionType = {
 }
 
 type ActionCreatorType = {
-    type: string
+    type: typeof SET_INITIALIZED
 }
 
 let initialState: InitialStateActionType = {
     initialized: false
-};
+}
 
-let appReducer = (state: object = initialState, action: any) => {
+let appReducer = (state: InitialStateActionType = initialState, action: any): InitialStateActionType => {
     switch (action.type) {
         case SET_INITIALIZED:
             return {
@@ -29,7 +29,7 @@ let appReducer = (state: object = initialState, action: any) => {
 
 export const initializingSucces = (): ActionCreatorType => ({
     type: SET_INITIALIZED
-});
+})
 
 
 export const initializeThunk = () => {
@@ -37,6 +37,6 @@ export const initializeThunk = () => {
         await dispatch(authThunk());
         dispatch(initializingSucces());
     }
-};
+}
 
 export default appReducer;
