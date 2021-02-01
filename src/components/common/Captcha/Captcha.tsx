@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { maxLenghtCreator, requiredFild } from '../../../utils/validators/validators';
 import { createField, Input } from '../FormControls/FormControls';
 
 const maxLenght = maxLenghtCreator(10);
 
-const Captcha = ({captchaURL}) => {
+type PropsType = {
+    captchaURL: string
+}
+
+const Captcha: FC<PropsType> = ({captchaURL}) => {
     return (
         <div>
             <div>

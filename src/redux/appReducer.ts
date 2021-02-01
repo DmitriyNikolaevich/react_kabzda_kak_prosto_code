@@ -6,6 +6,8 @@ type InitialStateActionType = {
     initialized: boolean
 }
 
+type ActionTyps = ActionCreatorType
+
 type ActionCreatorType = {
     type: typeof SET_INITIALIZED
 }
@@ -14,7 +16,7 @@ let initialState: InitialStateActionType = {
     initialized: false
 }
 
-let appReducer = (state: InitialStateActionType = initialState, action: any): InitialStateActionType => {
+let appReducer = (state: InitialStateActionType = initialState, action: ActionTyps): InitialStateActionType => {
     switch (action.type) {
         case SET_INITIALIZED:
             return {

@@ -1,8 +1,17 @@
-import React from 'react';
-import s from './Users.module.css';
-import { NavLink } from 'react-router-dom';
+import React, { FC } from 'react'
+import s from './Users.module.css'
+import { NavLink } from 'react-router-dom'
+import { UserType } from '../../types/type'
 
-let User = ({ followThunk, unfollowThunk, progress, u }) => {
+type PropsType = {
+    progress: boolean
+    u: UserType
+
+    followThunk: (id: number) => void
+    unfollowThunk: (id: number) => void
+}
+
+let User: FC<PropsType> = ({ followThunk, unfollowThunk, progress, u }) => {
     return <div>
         <span>
             <div>
@@ -38,4 +47,4 @@ let User = ({ followThunk, unfollowThunk, progress, u }) => {
     </div>
 }
 
-export default User;
+export default User

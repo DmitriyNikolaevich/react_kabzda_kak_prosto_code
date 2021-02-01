@@ -21,6 +21,8 @@ type AddMessageActionCreatorType = {
   message: string
 }
 
+type ActionType = AddMessageActionCreatorType
+
 let initialState = {
     dialogs: [
       { id: 1, name: "Dima" },
@@ -38,7 +40,7 @@ let initialState = {
     newMessageText: "Mes"
   }
 
-const dialogPageReducer = (state = initialState, action: any): InitializStateType => {
+const dialogPageReducer = (state: InitializStateType = initialState, action: ActionType): InitializStateType => {
          
     switch (action.type) {
 

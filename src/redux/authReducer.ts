@@ -33,6 +33,8 @@ type SetCaptchaURLActionType = {
      payload: SetCaptchaURLActionPayloadType
 }
 
+type ActionType = SetCaptchaURLActionType | SetAuthDataActionType
+
 let initialState: InitialStateType = {
     userId: null,
     email: null,
@@ -41,7 +43,7 @@ let initialState: InitialStateType = {
     captchaURL: null
 }
 
-let authReducer = (state: InitialStateType = initialState, action: any) => {
+let authReducer = (state: InitialStateType = initialState, action: ActionType) => {
     switch (action.type) {
         case SET_USER_DATA:
         case SET_CAPTCHA_URL:

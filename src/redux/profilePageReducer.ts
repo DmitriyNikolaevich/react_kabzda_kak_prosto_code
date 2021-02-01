@@ -11,7 +11,7 @@ const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS';
 
 export type WriteWordsActionCreatorType = {
   type: typeof WRITE_WORDS
-  newText: string
+  newLetter: string
 }
 
 export type AddPostActionCreatorType = {
@@ -39,6 +39,9 @@ export type SavePhotoSuccessType = {
   photos: string
 }
 
+type ActionType = WriteWordsActionCreatorType | AddPostActionCreatorType | SetUserProfileType | SetUserStatusType | 
+                  DeletePost | SavePhotoSuccessType
+
 let initialState = {
   newPostText: null,
   profile: null,
@@ -51,7 +54,7 @@ let initialState = {
   ]
 };
 
-const profilePageReducer = (state: InitialState = initialState, action:any): InitialState => {
+const profilePageReducer = (state: InitialState = initialState, action:ActionType): InitialState => {
 
   switch (action.type) {
 
@@ -103,8 +106,8 @@ const profilePageReducer = (state: InitialState = initialState, action:any): Ini
   }
 }
 
-export const writeWordsActionCreator = (newText: string): WriteWordsActionCreatorType => ({
-  type: WRITE_WORDS, newText
+export const writeWordsActionCreator = (newLetter: string): WriteWordsActionCreatorType => ({
+  type: WRITE_WORDS, newLetter
 });
 export const addPostActionCreator = (post: string): AddPostActionCreatorType => ({
   type: ADD_POST, post

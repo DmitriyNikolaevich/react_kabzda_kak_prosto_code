@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 import loader from '../../../assets/images/loader3.svg'
 
-const Preloader = (props) => {
+const Preloader = (props: any) => {
     return (
         <div>
             <img src={loader} alt="Alt text" />
@@ -9,4 +9,4 @@ const Preloader = (props) => {
     )
 }
 
-export default Preloader;
+export default Preloader
