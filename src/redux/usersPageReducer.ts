@@ -1,9 +1,12 @@
-import { AppStateType } from './reduxStore';
-import { Dispatch } from "redux"
+//import { AppStateType } from './reduxStore';
+//import { Dispatch } from "redux"
+import { Dispatch } from "react"
+import { ThunkAction } from "redux-thunk"
 import { followAPI, usersAPI } from "../API"
-import { UserType } from "../types/type"
+import { GetedUserType } from "../types/type"
 import { updateObjectInArray } from "../utils/objectHelper"
-import { ThunkAction } from 'redux-thunk';
+import { AppStateType } from "./reduxStore"
+//import { ThunkAction } from 'redux-thunk'
 
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
@@ -14,7 +17,7 @@ const SET_LOADER = 'SET_LOADER'
 const FOLLOWING_IN_PROGRESS = 'FOLLOWING_IN_PROGRESS'
 
 type InitialState = {
-    users: Array<UserType>
+    users: Array<GetedUserType>
     pageSize: number | null
     totalUsersCount: number | null
     currentPage: number | null
@@ -26,13 +29,15 @@ type ActionType = FollowType | UnfollowType | SetUsersType | SetCurrentPageType 
                     SetTotalCountType | SetFetchingType | InProgressType
 
 let initialState = {
-    users: [],
+    users: [] as Array<GetedUserType>,
     pageSize: 10,
     totalUsersCount: 0,
     currentPage: 2,
     isFetching: true,
     progress: false
 }
+
+// type InitialState = typeof initialState
 
 let usersPageReducer = (state: InitialState = initialState, action: ActionType): InitialState => {
     switch (action.type) {
@@ -49,7 +54,7 @@ let usersPageReducer = (state: InitialState = initialState, action: ActionType):
             }
 
         case SET_USERS:
-            return { ...state, users: [...state.users, action.users] }
+            return { ...state, users: action.users }
 
         case SET_CURRENT_PAGE:
             return { ...state, currentPage: action.currentPage }
@@ -84,9 +89,9 @@ export const unfollow = (usersID: number): UnfollowType => ({
 })
 type SetUsersType = {
     type: typeof SET_USERS
-    users: UserType
+    users: Array<GetedUserType>
 }
-export const setUsers = (users: UserType): SetUsersType => ({
+export const setUsers = (users: Array<GetedUserType>): SetUsersType => ({
     type: SET_USERS, users
 })
 type SetCurrentPageType = {

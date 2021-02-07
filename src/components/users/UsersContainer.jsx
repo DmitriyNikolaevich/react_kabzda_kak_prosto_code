@@ -3,42 +3,19 @@ import { connect } from 'react-redux'
 import { getUsers, onPageChenger, unfollowThunk, followThunk } from '../../redux/usersPageReducer'
 import Users from './Users'
 import Preloader from '../common/preloader/Preloader'
-import { getProgress, getUsersSelector, getPageSize, getTotalUsersCount, getCurrentPage, getIsFetching } from '../../redux/usersSelectors'
-import { UserType } from '../../types/type'
-import { AppStateType } from '../../redux/reduxStore'
+import { getProgress, getPageSize, getTotalUsersCount, getCurrentPage, getIsFetching, getUsersSelector } from '../../redux/usersSelectors'
 
-type MapStatePropsType = {
-    currentPage: number
-    pageSize: number
-    isFetching: boolean | undefined
-    totalUsersCount: number
-    users: Array<UserType>
-    progress: boolean
-}
-
-type MapDispatchPropsType = {
-    getUsers: (currentPage: number, pageSize: number) => void
-    onPageChenger: (pageNumber: number, pageSize: number) => void
-    unfollowThunk: (id: number) => void
-    followThunk: (id: number) => void
-}
-
-type OwnPropsType = {
-    pageTitle: string
-}
-
-type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
-
-class UsersAPIComponent extends React.Component<PropsType> {
-
+class UsersAPIComponent extends React.Component {
+    
     componentDidMount() {
         this.props.getUsers(this.props.currentPage, this.props.pageSize)
     }
 
-    onPageChenged = (pageNumber: number) => {
+    onPageChenged = (pageNumber) => {
         this.props.onPageChenger(pageNumber, this.props.pageSize);
     }
 
+    
     render = () => {
 
         
@@ -58,7 +35,8 @@ class UsersAPIComponent extends React.Component<PropsType> {
     }
 }
 
-let mapStateToProps = (state: AppStateType): MapStatePropsType => {
+let mapStateToProps = (state) => {
+    debugger
     return {
         users: getUsersSelector(state),
         pageSize: getPageSize(state) || 1,
@@ -69,5 +47,5 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     }
 }
 //TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultState
-export default connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>
+export default connect
 (mapStateToProps, { getUsers, onPageChenger, unfollowThunk, followThunk })(UsersAPIComponent)

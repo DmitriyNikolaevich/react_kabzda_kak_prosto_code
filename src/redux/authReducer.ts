@@ -1,8 +1,8 @@
-import { stopSubmit } from "redux-form";
-import { authAPI, sequrityAPI } from "../API";
+import { stopSubmit } from "redux-form"
+import { authAPI, ResultCodeForCaptchaEnum, ResultCodesEnum, sequrityAPI } from "../API"
 
-const SET_USER_DATA = 'SET_USER_DATA';
-const SET_CAPTCHA_URL = 'SET_CAPTCHA_URL';
+const SET_USER_DATA = 'SET_USER_DATA'
+const SET_CAPTCHA_URL = 'SET_CAPTCHA_URL'
 
 type InitialStateType = {
     userId: number | null
@@ -71,8 +71,8 @@ export const setCaptchaURL = (captchaURL: string): SetCaptchaURLActionType => ({
 export const authThunk = () => {
     return async (dispatch: any) => {
         const response = await authAPI.getAuth();
-        if (response.data.resultCode === 0) {
-            dispatch(setAuthData(response.data.data.id, response.data.data.email, response.data.data.login, true));
+        if (response.resultCode === ResultCodesEnum.success) {
+            dispatch(setAuthData(response.data.id, response.data.email, response.data.login, true));
         }
     }
 }
@@ -80,13 +80,13 @@ export const authThunk = () => {
 export const login = (email: string, password: string, rememberMe: boolean, captcha: string) => {
     return async (dispatch: any) => {
          let response = await authAPI.login(email, password, rememberMe, captcha);
-                if (response.data.resultCode === 0) {
+                if (response.resultCode === ResultCodesEnum.success) {
                     dispatch(authThunk());
                 } else {
-                    if (response.data.resultCode === 10) {
+                    if (response.resultCode === ResultCodeForCaptchaEnum.CaptchaIsRequired) {
                         dispatch(getCaptcha()); 
                     }
-                    let message = response.data.messages.lenght > 0 ? response.data.messages : "Some error";
+                    let message = response.messages.length > 0 ? response.messages : "Some error";
                     dispatch(stopSubmit("login", { _error: message }))
                 }
     }
@@ -104,10 +104,10 @@ export const getCaptcha = () => {
 export const logout = () => {
     return async (dispatch: any) => {
         let response = await authAPI.logout();
-        if (response.data.resultCode === 0) {
+        if (response.resultCode === ResultCodesEnum.success) {
             dispatch(setAuthData(null, null, null, false));
         }
     }
 }
 
-export default authReducer;
+export default authReducer

@@ -1,17 +1,13 @@
-import React, { FC } from 'react'
+import React from 'react'
 import s from './Users.module.css'
 import { NavLink } from 'react-router-dom'
-import { UserType } from '../../types/type'
 
-type PropsType = {
-    progress: boolean
-    u: UserType
+let User = ({ followThunk, unfollowThunk, progress, u }) => {
 
-    followThunk: (id: number) => void
-    unfollowThunk: (id: number) => void
-}
+    console.log(u)
 
-let User: FC<PropsType> = ({ followThunk, unfollowThunk, progress, u }) => {
+    debugger
+
     return <div>
         <span>
             <div>
@@ -20,7 +16,8 @@ let User: FC<PropsType> = ({ followThunk, unfollowThunk, progress, u }) => {
                 </NavLink>
             </div>
             <div>
-                {u.followed
+                {
+                u.followed
                     ? <button disabled={progress} onClick={() => unfollowThunk(u.id)} >Unfollow</button>
                     : <button disabled={progress} onClick={() => followThunk(u.id)} >Follow</button>
                 }

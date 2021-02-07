@@ -5,11 +5,20 @@ type PostType = {
     likes: number | null
 }
 
+export type ProfileType = {
+    userID: number
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    contacts: any
+    photos: PhotosType
+}
+
 export type InitialState = {
     newPostText: string | null
     profile: any
     status: string | null
-    user: number | null
+    user: UserType | null
     posts: Array<PostType>
 }
 
@@ -18,7 +27,29 @@ type PhotosType = {
     large: string
 }
 
+type ContactsType = {
+    github: string
+    vk: string
+    facebook: string
+    instagram: string
+    twitter: string
+    website: string
+    youtube: string
+    mainLink: string
+}
+
 export type UserType = {
+    userId: number
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    contacts: ContactsType
+    photos: PhotosType
+    followed: boolean
+    status: string
+}
+
+export type GetedUserType = {
     id: number
     name: string
     status: string
