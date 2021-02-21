@@ -5,15 +5,17 @@ import MessageReduxForm from './MessageForm/MessageForm'
 type PropsType = {
     dialogItems: string
     messageItems: string
-    addMessageActionCreator: (message: string) => void
+    actions: {
+        addMessageActionCreator: (message: string) => void
+    }
 }
 
-const Dialogs: FC<PropsType> = ({ dialogItems, messageItems, addMessageActionCreator }) => {
+const Dialogs: FC<PropsType> = ({ dialogItems, messageItems, actions }) => {
 
     const onSubmit = (submitData: any) => {
         //props.addMessage();
         console.log(submitData.message);
-        addMessageActionCreator(submitData.message);
+        actions.addMessageActionCreator(submitData.message);
         
     }
     

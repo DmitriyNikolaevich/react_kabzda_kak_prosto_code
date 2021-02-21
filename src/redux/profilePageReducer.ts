@@ -1,52 +1,15 @@
-import { stopSubmit } from "redux-form"
-import { profileAPI } from "../API"
-import { InitialState, UserType } from "../types/type"
+import { PhotosExportType, ProfileType } from './../types/type';
+import { FormAction, stopSubmit } from "redux-form"
+import { profileAPI } from "../api/profile-api"
+import { UserType } from "../types/type"
+import { BaseThunkType, InfernActionTypes } from './reduxStore';
 
-const WRITE_WORDS = 'WRITE-WORDS'
-const ADD_POST = 'ADD-POST'
-const SET_USER_PROFILE = 'SET_USER_PROFILE'
-const SET_STATUS = 'SET_STATUS'
-const DELETE_POST = 'DELETE_POST'
-const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS'
-
-type WriteWordsActionCreatorType = {
-  type: typeof WRITE_WORDS
-  newLetter: string
-}
-
-type AddPostActionCreatorType = {
-  type: typeof ADD_POST
-  post: string
-}
-
-type SetUserProfileType = {
-  type: typeof SET_USER_PROFILE
-  userProfile: UserType
-}
-
-type SetUserStatusType = {
-  type: typeof SET_STATUS
-  status: string
-}
-
-type DeletePost = {
-  type: typeof DELETE_POST
-  postID: number
-}
-
-type SavePhotoSuccessType = {
-  type: typeof SAVE_PHOTO_SUCCESS
-  photos: string
-}
-
-type ActionType = WriteWordsActionCreatorType | AddPostActionCreatorType | SetUserProfileType | SetUserStatusType | 
-                  DeletePost | SavePhotoSuccessType
 
 let initialState = {
-  newPostText: null,
-  profile: null,
-  status: null,
-  user: null,
+  newPostText: '',
+  profile: {},
+  status: '',
+  user: null as UserType | null,
   posts: [
     { id: 1, src: 'https://yandex.ru/images/_crpd/1k00Bv363/fda7baVuV/w67q95nBg7VBPpAu-7LnKXyrhEj4EylW7BSmIu6MjelT1Pr9XqSMTOqjaYLH84YDuoIjoVFsofB6WMkxAkA30M_j4v_w6Y_4CAvUfqKTgnBtg_EpjUp0V8Q58zrurNGcewQiQeZsTNRuKsFmQ9vTD46iX6RcdQxYO0W0hF8R23UXPvNexNWXWWlaOPbi1v-tKQ-ogGjbpWdIDBYz1oixAHv0tn0-YJi0Pur5WicbYxtKaiokDDnkPbM5eLiPwaPV1wZ79njJo91Vykh2plY3pZXPwCxM2wUz3Oz2T37cPeBr1Aqh_lCgzAKqHX5Pqx-DtgaGdESxwAWP_fwQz5VT8YvCs9YYQVehpUZM-moOW70BIzAASLPp55A00veOCM0s70DuwdqobCyGNhHSM5szv9JyBgTYJZAZL6HUpF8901H7-rfajBUrPWnS_P5ehpu1ZQfY0ARr3Xe0aK4r1ti1iL-cDqXOQBDcomrRYp_bh39GcnZQQGm0wRsNfGyXNZsFq14jerTpDwVdPsiuahb3BVkH6KQgG5GrPGg-4-IwiRjf1Arl3sAcUH4Gvd6r7xsfVqIerHzJuDkDSUQA7yVHDTemb1rwrRPxTeaMOhpa5x0Rh6jQGE-5e9CAAq-60AUsTziOJdKEnDjiZgmCn-9bJz4O7pR84awpm93MvJPhL3Ur3ouuNBmf4Wm6KDZ-kg-pIbeIlJTnhasAxGbXZhhVtKfQQg3GDIyw5mbpVrvjR7s6coKwpG2YNZN1xCh7OUvN92brAmSVZ-FN8sx6Kk5b6VnfZCQcR7XvjDACb_LMwXij7A7R8rhscPLeiQ4np4OfGr7eFAzhLLn7PdSUd41TacNGa6I0lat1waqwynYmhxX5BzgQWLtdD0BMVpuW3AWoS-gW0Qb8YIAW2tX6v7dLkxYWjiTAtcC597nc3FOp66U3pmu2-MmjUcH2AEJmSvf9ia9Y2PwzDXPAJOp7dvAI', text: 'Post 3', likes: 3 },
     { id: 2, src: 'https://yandex.ru/images/_crpd/1k00Bv363/fda7baVuV/w67q95nBg7VBPpAu-7LnKXyrhEj4EylW7BSmIu6MjelT1Pr9XqSMTOqjaYLH84YDuoIjoVFsofB6WMkxAkA30M_j4v_w6Y_4CAvUfqKTgnBtg_EpjUp0V8Q58zrurNGcewQiQeZsTNRuKsFmQ9vTD46iX6RcdQxYO0W0hF8R23UXPvNexNWXWWlaOPbi1v-tKQ-ogGjbpWdIDBYz1oixAHv0tn0-YJi0Pur5WicbYxtKaiokDDnkPbM5eLiPwaPV1wZ79njJo91Vykh2plY3pZXPwCxM2wUz3Oz2T37cPeBr1Aqh_lCgzAKqHX5Pqx-DtgaGdESxwAWP_fwQz5VT8YvCs9YYQVehpUZM-moOW70BIzAASLPp55A00veOCM0s70DuwdqobCyGNhHSM5szv9JyBgTYJZAZL6HUpF8901H7-rfajBUrPWnS_P5ehpu1ZQfY0ARr3Xe0aK4r1ti1iL-cDqXOQBDcomrRYp_bh39GcnZQQGm0wRsNfGyXNZsFq14jerTpDwVdPsiuahb3BVkH6KQgG5GrPGg-4-IwiRjf1Arl3sAcUH4Gvd6r7xsfVqIerHzJuDkDSUQA7yVHDTemb1rwrRPxTeaMOhpa5x0Rh6jQGE-5e9CAAq-60AUsTziOJdKEnDjiZgmCn-9bJz4O7pR84awpm93MvJPhL3Ur3ouuNBmf4Wm6KDZ-kg-pIbeIlJTnhasAxGbXZhhVtKfQQg3GDIyw5mbpVrvjR7s6coKwpG2YNZN1xCh7OUvN92brAmSVZ-FN8sx6Kk5b6VnfZCQcR7XvjDACb_LMwXij7A7R8rhscPLeiQ4np4OfGr7eFAzhLLn7PdSUd41TacNGa6I0lat1waqwynYmhxX5BzgQWLtdD0BMVpuW3AWoS-gW0Qb8YIAW2tX6v7dLkxYWjiTAtcC597nc3FOp66U3pmu2-MmjUcH2AEJmSvf9ia9Y2PwzDXPAJOp7dvAI', text: 'Post 7', likes: 9 },
@@ -54,17 +17,17 @@ let initialState = {
   ]
 };
 
-const profilePageReducer = (state: InitialState = initialState, action:ActionType): InitialState => {
+const profilePageReducer = (state: InitialState = initialState, action: ActionsType): InitialState => {
 
   switch (action.type) {
 
-    case WRITE_WORDS:
+    case 'SocNet/profile/WRITE-WORDS':
       return {
         ...state,
         newPostText: action.newLetter
       }
 
-    case ADD_POST:
+    case 'SocNet/profile/ADD-POST':
       let newPost = {
         id: state.posts.length + 1,
         src: 'https://yandex.ru/images/_crpd/1k00Bv363/fda7baVuV/w67q95nBg7VBPpAu-7LnKXyrhEj4EylW7BSmIu6MjelT1Pr9XqSMTOqjaYLH84YDuoIjoVFsofB6WMkxAkA30M_j4v_w6Y_4CAvUfqKTgnBtg_EpjUp0V8Q58zrurNGcewQiQeZsTNRuKsFmQ9vTD46iX6RcdQxYO0W0hF8R23UXPvNexNWXWWlaOPbi1v-tKQ-ogGjbpWdIDBYz1oixAHv0tn0-YJi0Pur5WicbYxtKaiokDDnkPbM5eLiPwaPV1wZ79njJo91Vykh2plY3pZXPwCxM2wUz3Oz2T37cPeBr1Aqh_lCgzAKqHX5Pqx-DtgaGdESxwAWP_fwQz5VT8YvCs9YYQVehpUZM-moOW70BIzAASLPp55A00veOCM0s70DuwdqobCyGNhHSM5szv9JyBgTYJZAZL6HUpF8901H7-rfajBUrPWnS_P5ehpu1ZQfY0ARr3Xe0aK4r1ti1iL-cDqXOQBDcomrRYp_bh39GcnZQQGm0wRsNfGyXNZsFq14jerTpDwVdPsiuahb3BVkH6KQgG5GrPGg-4-IwiRjf1Arl3sAcUH4Gvd6r7xsfVqIerHzJuDkDSUQA7yVHDTemb1rwrRPxTeaMOhpa5x0Rh6jQGE-5e9CAAq-60AUsTziOJdKEnDjiZgmCn-9bJz4O7pR84awpm93MvJPhL3Ur3ouuNBmf4Wm6KDZ-kg-pIbeIlJTnhasAxGbXZhhVtKfQQg3GDIyw5mbpVrvjR7s6coKwpG2YNZN1xCh7OUvN92brAmSVZ-FN8sx6Kk5b6VnfZCQcR7XvjDACb_LMwXij7A7R8rhscPLeiQ4np4OfGr7eFAzhLLn7PdSUd41TacNGa6I0lat1waqwynYmhxX5BzgQWLtdD0BMVpuW3AWoS-gW0Qb8YIAW2tX6v7dLkxYWjiTAtcC597nc3FOp66U3pmu2-MmjUcH2AEJmSvf9ia9Y2PwzDXPAJOp7dvAI',
@@ -78,98 +41,112 @@ const profilePageReducer = (state: InitialState = initialState, action:ActionTyp
         newPostText: ""
       }
 
-    case SET_USER_PROFILE:
+    case 'SocNet/profile/SET_USER_PROFILE':
       return {
         ...state,
         user: action.userProfile
       }
 
-    case SET_STATUS:
+    case 'SocNet/profile/SET_STATUS':
       return {
         ...state,
         status: action.status
       }
 
-    case DELETE_POST:
+    case 'SocNet/profile/DELETE_POST':
       return {
         ...state,
         posts: state.posts.filter(p => p.id !== action.postID)
       }
 
-    case SAVE_PHOTO_SUCCESS:
+    case 'SocNet/profile/SAVE_PHOTO_SUCCESS':
       return {
         ...state,
         profile: {...state.profile, photos: action.photos}
       }
 
     default:
-      return state;
+      return state
   }
 }
 
-export const writeWordsActionCreator = (newLetter: string): WriteWordsActionCreatorType => ({
-  type: WRITE_WORDS, newLetter
-})
-export const addPostActionCreator = (post: string): AddPostActionCreatorType => ({
-  type: ADD_POST, post
-})
-export const setUserProfile = (userProfile: UserType): SetUserProfileType => ({
-  type: SET_USER_PROFILE, userProfile
-})
-export const setUserStatus = (status: string): SetUserStatusType => ({
-  type: SET_STATUS, status
-})
-export const deletePost = (postID: number): DeletePost => ({
-  type: DELETE_POST, postID
-})
-export const savePhotoSuccess = (photos: string): SavePhotoSuccessType => ({
-  type: SAVE_PHOTO_SUCCESS, photos
-})
+export const actions = {
+  writeWordsActionCreator: (newLetter: string) => ({
+    type: 'SocNet/profile/WRITE-WORDS', newLetter
+  } as const),
+  addPostActionCreator: (post: string) => ({
+    type: 'SocNet/profile/ADD-POST', post
+  } as const),
+  setUserProfile: (userProfile: UserType) => ({
+    type: 'SocNet/profile/SET_USER_PROFILE', userProfile
+  } as const),
+  setUserStatus: (status: string) => ({
+    type: 'SocNet/profile/SET_STATUS', status
+  } as const),
+  deletePost: (postID: number) => ({
+    type: 'SocNet/profile/DELETE_POST', postID
+  } as const),
+  savePhotoSuccess: (photos: PhotosExportType) => ({
+    type: 'SocNet/profile/SAVE_PHOTO_SUCCESS', photos
+  } as const)
+}
 
 
-export const getUserThunk = (user: number) => {
-  return async (dispatch: any) => {
+export const getUserThunk = (user: number): ThunkType => {
+  return async (dispatch) => {
     let response = await profileAPI.getUser(user)
-    dispatch(setUserProfile(response.data))
+    dispatch(actions.setUserProfile(response))
   }
 }
 
-export const getUserStatusThunk = (userID: number) => {
-  return async (dispatch: any) => {
+export const getUserStatusThunk = (userID: number): ThunkType => {
+  return async (dispatch) => {
     let response = await profileAPI.getStatus(userID)
-    dispatch(setUserStatus(response.data))
+    dispatch(actions.setUserStatus(response))
   }
 }
 
-export const updateUserStatusThunk = (userStatus: string) => {
-  return async (dispatch: any) => {
+export const updateUserStatusThunk = (userStatus: string): ThunkType => {
+  return async (dispatch) => {
     let response = await profileAPI.updateStatus(userStatus)
-    if (response.data.resultCode === 0) {
-      dispatch(setUserStatus(userStatus))
+    if (response.resultCode === 0) {
+      dispatch(actions.setUserStatus(userStatus))
     }
   }
 }
 
-export const savePhotoThunk = (file: string) => {
-  return async (dispatch: any) => {
+export const savePhotoThunk = (file: File): ThunkType => {
+  return async (dispatch) => {
     let response = await profileAPI.savePhoto(file)
     if (response.data.resultCode === 0) {
-      dispatch(savePhotoSuccess(response.data.data.photos))
+      dispatch(actions.savePhotoSuccess(response.data.data.photos))
     }
   }
 }
 
-export const saveProfileDataThunk = (profileData: any) => {
-  return async (dispatch: any, getState: any) => {
+export const saveProfileDataThunk = (profileData: ProfileType): BaseThunkType<ActionsType | FormAction> => {
+  return async (dispatch, getState) => {
     let response = await profileAPI.saveProfileData(profileData)
     const userID = getState().auth.userId
-    if (response.data.resultCode === 0) {
-      dispatch(getUserThunk(userID))
+    if (response.resultCode === 0) {
+      if (userID !== null) {
+        dispatch(getUserThunk(userID))
+      } else {
+        throw new Error("Cant be null")
+      }
+      
     } else {
-      dispatch(stopSubmit("profileDataForm", {_error: response.data.messages[0]}))
-      return Promise.reject(response.data.messages[0])
+      dispatch(stopSubmit("profileDataForm", {_error: response.messages[0]}))
+      return Promise.reject(response.messages[0])
     }
   }
 }
 
 export default profilePageReducer
+
+
+type InitialState = typeof initialState
+
+type ActionsType = InfernActionTypes<typeof actions>
+
+type ThunkType = BaseThunkType<ActionsType>

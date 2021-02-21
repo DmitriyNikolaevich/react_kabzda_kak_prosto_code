@@ -41,7 +41,7 @@ const ProfileInfo = ({isOwner, user, status, updateStatus, savePhoto, saveProfil
     if (!user) {
         return <Preloader />
     }
-
+    
     return (
         <div>
             <div>

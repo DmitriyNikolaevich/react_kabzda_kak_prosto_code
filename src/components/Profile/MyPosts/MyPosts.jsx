@@ -10,7 +10,7 @@ class MyPosts extends PureComponent {
     // };
 
     onSubmit = (postData) => {
-        this.props.addPostActionCreator(postData.post);
+        this.props.actions.addPostActionCreator(postData.post);
     }
 
     render() {

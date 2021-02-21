@@ -1,24 +1,14 @@
-import { authThunk } from "./authReducer";
+import { ThunkAction } from "redux-thunk"
+import { authThunk } from "./authReducer"
+import { AppStateType, InfernActionTypes } from "./reduxStore"
 
-const SET_INITIALIZED = 'SET_INITIALIZED';
-
-type InitialStateActionType = {
-    initialized: boolean
-}
-
-type ActionTyps = ActionCreatorType
-
-type ActionCreatorType = {
-    type: typeof SET_INITIALIZED
-}
-
-let initialState: InitialStateActionType = {
+let initialState = {
     initialized: false
 }
 
-let appReducer = (state: InitialStateActionType = initialState, action: ActionTyps): InitialStateActionType => {
+let appReducer = (state: InitialStateActionType = initialState, action: ActionsTypes): InitialStateActionType => {
     switch (action.type) {
-        case SET_INITIALIZED:
+        case 'SocNet/auth/SET_INITIALIZED':
             return {
                 ...state,
                 initialized: true
@@ -29,16 +19,20 @@ let appReducer = (state: InitialStateActionType = initialState, action: ActionTy
     }
 }
 
-export const initializingSucces = (): ActionCreatorType => ({
-    type: SET_INITIALIZED
-})
+const actions = {
+    initializingSucces: () => ({type: 'SocNet/auth/SET_INITIALIZED'} as const)
+}
 
-
-export const initializeThunk = () => {
-    return async (dispatch: any) => {
-        await dispatch(authThunk());
-        dispatch(initializingSucces());
+export const initializeThunk = (): ThunkType => {
+    return async (dispatch) => {
+        await dispatch(authThunk())
+        dispatch(actions.initializingSucces())
     }
 }
 
-export default appReducer;
+export default appReducer
+
+
+type InitialStateActionType = typeof initialState
+type ActionsTypes = InfernActionTypes<typeof actions>
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>

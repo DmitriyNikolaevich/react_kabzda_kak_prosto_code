@@ -1,27 +1,5 @@
-const ADD_MESSAGE = 'ADD-MESSAGE';
+import { InfernActionTypes } from "./reduxStore"
 
-type MessagesType = {
-  id: number
-  message: string | null
-}
-
-type DialogsTypa = {
-  id: number
-  name: string | null
-}
-
-type InitializStateType = {
-  dialogs: Array<DialogsTypa>
-  messages: Array<MessagesType>
-  newMessageText: string | null
-}
-
-type AddMessageActionCreatorType = {
-  type: typeof ADD_MESSAGE
-  message: string
-}
-
-type ActionType = AddMessageActionCreatorType
 
 let initialState = {
     dialogs: [
@@ -40,27 +18,35 @@ let initialState = {
     newMessageText: "Mes"
   }
 
-const dialogPageReducer = (state: InitializStateType = initialState, action: ActionType): InitializStateType => {
+const dialogPageReducer = (state: InitializStateType = initialState, action: ActionsType): InitializStateType => {
          
     switch (action.type) {
 
-        case ADD_MESSAGE:
+        case 'SocNet/dialog/ADD-MESSAGE':
             
             let newMessage = {
               id: 6,
               message: action.message
-            };
+            }
             return {
               ...state,
               messages: [...state.messages, newMessage],
               newMessageText: ""
-            };
+            }
 
         default:
-            return state;
+            return state
     }
 }
 
-export const addMessageActionCreator = (message: string): AddMessageActionCreatorType => ({ type: ADD_MESSAGE, message: message });
+export const actions = {
+  addMessageActionCreator: (message: string) => ({ type: 'SocNet/dialog/ADD-MESSAGE', message: message } as const)
+}
 
-export default dialogPageReducer;
+
+export default dialogPageReducer
+
+
+type InitializStateType = typeof initialState
+
+type ActionsType = InfernActionTypes<typeof actions>

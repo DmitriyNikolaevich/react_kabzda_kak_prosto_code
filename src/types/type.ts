@@ -1,3 +1,5 @@
+import { ResultCodesEnum } from "../API"
+
 type PostType = {
     id: number
     src: string | null
@@ -22,9 +24,13 @@ export type InitialState = {
     posts: Array<PostType>
 }
 
-type PhotosType = {
+export type PhotosType = {
     small: string
     large: string
+}
+
+export type PhotosExportType = {
+    photos: PhotosType
 }
 
 type ContactsType = {
@@ -60,4 +66,10 @@ export type GetedUserType = {
 export type Message = {
     id: number
     message: string
+}
+
+export type ResponseType<D = {}, RC = ResultCodesEnum> = {
+    data: D
+    messages: string
+    resultCode: RC
 }
