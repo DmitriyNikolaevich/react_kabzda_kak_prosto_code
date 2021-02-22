@@ -1,8 +1,8 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import s from './Header.module.css';
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import s from './Header.module.css'
 
-const Header = (props) => {
+const Header: React.FC<PropsTypes> = (props) => {
     return (
         <header className={s.header}>
             <img src='https://c7.hotpng.com/preview/602/440/925/javascript-clip-art-openclipart-logo-number-js.jpg' alt="Alt text" />
@@ -16,4 +16,11 @@ const Header = (props) => {
     )
 }
 
-export default Header;
+export default Header
+
+
+type PropsTypes = {
+    isAuth: boolean
+    login: string
+    logout: () => void
+}

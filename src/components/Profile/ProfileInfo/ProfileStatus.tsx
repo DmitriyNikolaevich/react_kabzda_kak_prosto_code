@@ -1,14 +1,5 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react'
 
-type PropsType = {
-    status: string
-    updateStatus: (newStatus: string) => void
-}
-
-type StateType = {
-    editMode: boolean
-    status: string
-}
 
 class ProfileStatus extends React.Component<PropsType, StateType> {
 
@@ -26,7 +17,7 @@ class ProfileStatus extends React.Component<PropsType, StateType> {
     deactivateEditMode = () => {
         this.setState({
             editMode: false
-        });
+        })
         this.props.updateStatus(this.state.status);
     }
 
@@ -60,4 +51,15 @@ class ProfileStatus extends React.Component<PropsType, StateType> {
     }
 }
 
-export default ProfileStatus;
+export default ProfileStatus
+
+
+type PropsType = {
+    status: string
+    updateStatus: (newStatus: string) => void
+}
+
+type StateType = {
+    editMode: boolean
+    status: string
+}

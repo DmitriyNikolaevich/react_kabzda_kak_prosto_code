@@ -3,7 +3,7 @@ import { authThunk } from "./authReducer"
 import { AppStateType, InfernActionTypes } from "./reduxStore"
 
 let initialState = {
-    initialized: false
+    initialized: false as boolean
 }
 
 let appReducer = (state: InitialStateActionType = initialState, action: ActionsTypes): InitialStateActionType => {

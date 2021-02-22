@@ -1,13 +1,9 @@
 import React from 'react'
 import s from './Users.module.css'
 import { NavLink } from 'react-router-dom'
+import { GetedUserType } from '../../types/type'
 
-let User = ({ followThunk, unfollowThunk, progress, u }) => {
-
-    console.log(u)
-
-    debugger
-
+let User = ({ followThunk, unfollowThunk, progress, u }: PropsType) => {
     return <div>
         <span>
             <div>
@@ -45,3 +41,11 @@ let User = ({ followThunk, unfollowThunk, progress, u }) => {
 }
 
 export default User
+
+
+type PropsType = {
+    followThunk: (id: number) => void
+    unfollowThunk: (id: number) => void
+    progress: boolean
+    u: GetedUserType
+}

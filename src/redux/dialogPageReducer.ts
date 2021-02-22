@@ -47,6 +47,6 @@ export const actions = {
 export default dialogPageReducer
 
 
-type InitializStateType = typeof initialState
+export type InitializStateType = typeof initialState
 
 type ActionsType = InfernActionTypes<typeof actions>

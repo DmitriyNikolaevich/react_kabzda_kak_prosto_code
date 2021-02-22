@@ -25,6 +25,9 @@ export const getIsAuth = (state: AppStateType) => {
 export const getNewMessageText = (state: AppStateType) => {
     return state.dialogPage.newMessageText
 }
+export const getInitializedApp = (state: AppStateType) => {
+    return state.app.initialized
+}
 
 
 

@@ -1,40 +1,42 @@
-import React from 'react';
-import Preloader from '../../common/preloader/Preloader';
-import s from './ProfileInfo.module.css';
-import ProfileStatusWithHooks from './ProfileStatusWithHooks';
-import userPhoto from '../../../assets/images/userPhoto.jpg';
-import ProfileData from './ProfileData';
-import ProfileDataForm from './ProfileDataForm';
-import { useState } from 'react';
-import EditModeButton from './EditModeButton';
+import React, { ChangeEvent } from 'react'
+import Preloader from '../../common/preloader/Preloader'
+import s from './ProfileInfo.module.css'
+import ProfileStatusWithHooks from './ProfileStatusWithHooks'
+import userPhoto from '../../../assets/images/userPhoto.jpg'
+import ProfileData from './ProfileData'
+import ProfileDataForm from './ProfileDataForm'
+import { useState } from 'react'
+import EditModeButton from './EditModeButton'
+import { UserType } from '../../../types/type'
+import { ProfileDataReduxFormProps } from '../ProfileContainer'
 
 
 
 
-const ProfileInfo = ({isOwner, user, status, updateStatus, savePhoto, saveProfileData}) => {
+const ProfileInfo: React.FC<PropsTypes> = ({isOwner, user, status, updateStatus, savePhoto, saveProfileData}) => {
 
-    const [editMode, editModeEditor] = useState(false);
+    const [editMode, editModeEditor] = useState(false)
 
     const activateEditMode = () => {
-        editModeEditor(true);
+        editModeEditor(true)
     }
 
     const deactivateEditMode = () => {
-        editModeEditor(false);
+        editModeEditor(false)
     }
 
-    const onMainPhotoSelected = (e) => {
+    const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            savePhoto(e.target.files[0]);
+            savePhoto(e.target.files[0])
         }
     }
 
-    const onSubmit = (formData) => {
+    const onSubmit = (formData: ProfileDataReduxFormProps) => {
         saveProfileData(formData).then(
             () => {
-                deactivateEditMode();
+                deactivateEditMode()
             }
-        );
+        )
     }
     
 
@@ -52,13 +54,9 @@ const ProfileInfo = ({isOwner, user, status, updateStatus, savePhoto, saveProfil
                 {isOwner && <input type={"file"} onChange={onMainPhotoSelected} />}
                 {editMode 
                 ?   <ProfileDataForm 
-                            fullName={user.fullName} 
-                            lookingForAJob={user.lookingForAJob} 
-                            lookingForAJobDescription={user.lookingForAJobDescription} 
-                            aboutMe={user.aboutMe}
+                            lookingForAJob={user.lookingForAJob}
                             contacts={user.contacts}
                             onSubmit={onSubmit}
-                            deactivateEditMode={deactivateEditMode}
                             initialValues={user}
                     />
                 :   <ProfileData 
@@ -85,4 +83,14 @@ const ProfileInfo = ({isOwner, user, status, updateStatus, savePhoto, saveProfil
     )
 }
 
-export default ProfileInfo;
+export default ProfileInfo
+
+
+type PropsTypes = {
+    isOwner: boolean
+    user: UserType | null
+    status: string
+    updateStatus: (userStatus: string) => void
+    savePhoto: (file: File) => void
+    saveProfileData: (profileData: ProfileDataReduxFormProps) => Promise<any>
+}

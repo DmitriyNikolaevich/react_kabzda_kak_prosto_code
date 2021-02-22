@@ -1,6 +1,6 @@
-import React from 'react';
 
-const EditModeButton = ({editMode, deactivateEditMode, activateEditMode}) => {
+
+const EditModeButton: React.FC<PropsTypes> = ({editMode, deactivateEditMode, activateEditMode}) => {
     return (
         <div>
             {editMode
@@ -11,4 +11,10 @@ const EditModeButton = ({editMode, deactivateEditMode, activateEditMode}) => {
     )
 }
 
-export default EditModeButton;
+export default EditModeButton
+
+type PropsTypes = {
+    editMode: boolean
+    deactivateEditMode: () => void
+    activateEditMode: () => void
+}

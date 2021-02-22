@@ -33,7 +33,7 @@ export type PhotosExportType = {
     photos: PhotosType
 }
 
-type ContactsType = {
+export type ContactsType = {
     github: string
     vk: string
     facebook: string
@@ -53,6 +53,7 @@ export type UserType = {
     photos: PhotosType
     followed: boolean
     status: string
+    aboutMe?: string
 }
 
 export type GetedUserType = {

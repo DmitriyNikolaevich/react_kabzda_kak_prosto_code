@@ -1,22 +1,12 @@
 import React, { FC } from 'react'
+import { InitializStateType } from '../../redux/dialogPageReducer'
 import s from './Dialogs.module.css'
 import MessageReduxForm from './MessageForm/MessageForm'
 
-type PropsType = {
-    dialogItems: string
-    messageItems: string
-    actions: {
-        addMessageActionCreator: (message: string) => void
-    }
-}
+const Dialogs: FC<PropsType> = ({ dialogItems, messageItems, addMessageActionCreator }) => {
 
-const Dialogs: FC<PropsType> = ({ dialogItems, messageItems, actions }) => {
-
-    const onSubmit = (submitData: any) => {
-        //props.addMessage();
-        console.log(submitData.message);
-        actions.addMessageActionCreator(submitData.message);
-        
+    const onSubmit = (submitData: {message: string}) => {
+        addMessageActionCreator(submitData.message)
     }
     
     return (
@@ -33,3 +23,11 @@ const Dialogs: FC<PropsType> = ({ dialogItems, messageItems, actions }) => {
 }
 
 export default Dialogs
+
+
+type PropsType = {
+
+    dialogItems: InitializStateType
+    messageItems: InitializStateType
+    addMessageActionCreator: (message: string) => void
+}

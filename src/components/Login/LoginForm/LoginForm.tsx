@@ -5,11 +5,7 @@ import Captcha from '../../common/Captcha/Captcha'
 import { createField, Input } from '../../common/FormControls/FormControls'
 import { CreateFieldNamePropertiesType, LoginReduxFormType } from '../Login'
 
-let maxLenght = maxLenghtCreator(30);
-
-export type LoginFormOwnProps = {
-    captchaURL: string | null
-}
+let maxLenght = maxLenghtCreator(30)
 
 const LoginForm: FC<InjectedFormProps<LoginReduxFormType, LoginFormOwnProps> & LoginFormOwnProps> = ({ handleSubmit, error, captchaURL }) => {
     return (
@@ -36,3 +32,7 @@ const LoginReduxForm = reduxForm<LoginReduxFormType, LoginFormOwnProps>({
 })(LoginForm)
 
 export default LoginReduxForm
+
+export type LoginFormOwnProps = {
+    captchaURL: string | null
+}
