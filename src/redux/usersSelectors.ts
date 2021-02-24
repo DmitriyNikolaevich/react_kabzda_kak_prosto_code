@@ -28,6 +28,9 @@ export const getNewMessageText = (state: AppStateType) => {
 export const getInitializedApp = (state: AppStateType) => {
     return state.app.initialized
 }
+export const getUserFilter = (state: AppStateType) => {
+    return state.usersPage.filter
+}
 
 
 

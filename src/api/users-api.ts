@@ -8,8 +8,8 @@ type GetUsersItems = {
 }
 
 export const usersAPI = {
-    getUsers(currentPage = 1, pageSize = 10) {
-        return instance.get<GetUsersItems>(`users?page=${currentPage}&count=${pageSize}`)
+    getUsers(currentPage = 1, pageSize = 10, term: string = '') {
+        return instance.get<GetUsersItems>(`users?page=${currentPage}&count=${pageSize}&term=${term}`)
             .then(response => {
                 return response.data
             })

@@ -1,20 +1,26 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getUsers, onPageChenger, unfollowThunk, followThunk } from '../../redux/usersPageReducer'
+import { getUsers, unfollowThunk, followThunk, FilterType } from '../../redux/usersPageReducer'
 import Users from './Users'
 import Preloader from '../common/preloader/Preloader'
-import { getProgress, getPageSize, getTotalUsersCount, getCurrentPage, getIsFetching, getUsersSelector } from '../../redux/usersSelectors'
+import { getProgress, getPageSize, getTotalUsersCount, getCurrentPage, getIsFetching, getUsersSelector, getUserFilter } from '../../redux/usersSelectors'
 import { AppStateType } from '../../redux/reduxStore'
 import { GetedUserType } from '../../types/type'
 
 class UsersAPIComponent extends React.Component<PropsTypes> {
     
     componentDidMount() {
-        this.props.getUsers(this.props.currentPage, this.props.pageSize)
+        this.props.getUsers(this.props.currentPage, this.props.pageSize, "")
     }
 
     onPageChenged = (pageNumber: number) => {
-        this.props.onPageChenger(pageNumber, this.props.pageSize);
+        const { pageSize, filter } = this.props
+        this.props.getUsers(pageNumber, pageSize, filter.term);
+    }
+
+    onFilterChange = (filter: FilterType) => {
+        const { pageSize } = this.props
+        this.props.getUsers(1, pageSize, filter.term)
     }
 
     
@@ -25,6 +31,7 @@ class UsersAPIComponent extends React.Component<PropsTypes> {
         return  <>
                     { this.props.isFetching ? <Preloader /> : null}
                     <Users onPageChenged={this.onPageChenged}
+                         onFilterChange={this.onFilterChange}
                          currentPage={this.props.currentPage}
                          totalUsersCount={this.props.totalUsersCount}
                          pageSize={this.props.pageSize}
@@ -38,18 +45,18 @@ class UsersAPIComponent extends React.Component<PropsTypes> {
 }
 
 let mapStateToProps = (state: AppStateType) => {
-    debugger
     return {
         users: getUsersSelector(state),
         pageSize: getPageSize(state) || 1,
         totalUsersCount: getTotalUsersCount(state) || 1,
         currentPage: getCurrentPage(state) || 1,
         isFetching: getIsFetching(state),
-        progress: getProgress(state)
+        progress: getProgress(state),
+        filter: getUserFilter(state)
     }
 }
 
-export default connect(mapStateToProps, { getUsers, onPageChenger, unfollowThunk, followThunk })(UsersAPIComponent)
+export default connect(mapStateToProps, { getUsers, unfollowThunk, followThunk })(UsersAPIComponent)
 
 
 type PropsTypes = {
@@ -59,8 +66,8 @@ type PropsTypes = {
     isFetching: boolean
     users: GetedUserType[]
     progress: boolean
+    filter: FilterType
     unfollowThunk: (usersID: number) => void
     followThunk: (usersID: number) => void
-    getUsers: (currentPage: number, pageSize: number) => void
-    onPageChenger: (pageNumber: number, pageSize: number) => void
+    getUsers: (currentPage: number, pageSize: number, term: string) => void
 }
