@@ -1,11 +1,44 @@
-import React from 'react'
-import { GetedUserType } from '../../types/type'
+import React, { useEffect } from 'react'
 import Paginator from '../common/Paginator/Paginator'
 import User from './User'
 import UserSearchForm from './Search/UserSearchForm'
-import { FilterType } from '../../redux/usersPageReducer'
+import { FilterType, getUsers } from '../../redux/usersPageReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCurrentPage, getPageSize, getProgress, getTotalUsersCount, getUserFilter, getUsersSelector } from '../../redux/usersSelectors'
 
-let Users = ({ followThunk, unfollowThunk, progress, users, pageSize, totalUsersCount, currentPage, onPageChenged, onFilterChange }: PropsType) => {
+export const Users: React.FC<PropsType> = (props) => {
+
+    const totalUsersCount = useSelector(getTotalUsersCount)
+    const currentPage = useSelector(getCurrentPage)
+    const pageSize = useSelector(getPageSize)
+    const users = useSelector(getUsersSelector)
+    const progress = useSelector(getProgress)
+    const filter = useSelector(getUserFilter)
+
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getUsers(currentPage, pageSize, ""))
+    }, [])
+
+
+    const onPageChenged = (pageNumber: number) => {
+        dispatch(getUsers(pageNumber, pageSize, filter.term))
+    }
+
+    const onFilterChange = (filter: FilterType) => {
+        dispatch(getUsers(1, pageSize, filter.term))
+    }
+
+    const unfollowThunk = (usersID: number) => {
+        dispatch(unfollowThunk(usersID))
+    }
+
+    const followThunk = (usersID: number) => {
+        dispatch(followThunk(usersID))
+    }
+
     return <div>
         <div>
             <UserSearchForm onFilterChange={onFilterChange} />
@@ -21,16 +54,4 @@ let Users = ({ followThunk, unfollowThunk, progress, users, pageSize, totalUsers
     </div>
 }
 
-export default Users
-
-type PropsType = {
-    followThunk: (id: number) => void
-    unfollowThunk: (id: number) => void 
-    progress: boolean
-    users: GetedUserType[]
-    pageSize: number
-    totalUsersCount: number
-    currentPage: number
-    onPageChenged: (pageNumber: number) => void
-    onFilterChange: (filter: FilterType) => void
-}
+type PropsType = {}
