@@ -70,7 +70,7 @@ export const getCaptcha = (): ThunkType => {
     }
 }
 
-export const logout = (): ThunkType => {
+export const logoutThunk = (): ThunkType => {
     return async (dispatch) => {
         let response = await authAPI.logout()
         if (response.resultCode === ResultCodesEnum.success) {

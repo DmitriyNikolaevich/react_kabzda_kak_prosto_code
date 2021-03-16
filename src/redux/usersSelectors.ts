@@ -22,6 +22,12 @@ export const getProgress = (state: AppStateType) => {
 export const getIsAuth = (state: AppStateType) => {
     return state.auth.isAuth
 }
+export const getLogin = (state: AppStateType) => {
+    return state.auth.login
+}
+export const getAuthID = (state: AppStateType) => {
+    return state.auth.userId
+}
 export const getNewMessageText = (state: AppStateType) => {
     return state.dialogPage.newMessageText
 }
@@ -30,6 +36,12 @@ export const getInitializedApp = (state: AppStateType) => {
 }
 export const getUserFilter = (state: AppStateType) => {
     return state.usersPage.filter
+}
+export const getUserProfile = (state: AppStateType) => {
+    return state.profilePage.user
+}
+export const getStatus = (state: AppStateType) => {
+    return state.profilePage.status
 }
 
 

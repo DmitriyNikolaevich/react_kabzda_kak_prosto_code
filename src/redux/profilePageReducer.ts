@@ -124,13 +124,14 @@ export const savePhotoThunk = (file: File): ThunkType => {
   }
 }
 
-export const saveProfileDataThunk = (profileData: ProfileType): BaseThunkType<ActionsType | FormAction> => {
+export const saveProfileDataThunk = (profileData: ProfileType, editModeEditor: any): BaseThunkType<ActionsType | FormAction> => {
   return async (dispatch, getState) => {
     let response = await profileAPI.saveProfileData(profileData)
     const userID = getState().auth.userId
     if (response.resultCode === 0) {
       if (userID !== null) {
         dispatch(getUserThunk(userID))
+        editModeEditor(false)
       } else {
         throw new Error("Cant be null")
       }

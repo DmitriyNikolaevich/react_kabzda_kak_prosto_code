@@ -8,12 +8,12 @@ type PostType = {
 }
 
 export type ProfileType = {
-    userID: number
+    userID?: number
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
-    contacts: any
-    photos: PhotosType
+    contacts?: any
+    photos?: PhotosType
 }
 
 export type InitialState = {

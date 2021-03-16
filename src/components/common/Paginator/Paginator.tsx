@@ -25,7 +25,6 @@ let Paginator: React.FC<PropsType> = ({totalItemsCount, pageSize, onPageChenged,
     let [portionNumber, setPortionNumber] = useState(1)
     let leftPortionPageNumber = (portionNumber - 1) * portionSize + 1
     let rightPortionNumber = portionNumber * portionSize
-    debugger
     return (
         <div className={s.paginator}>
             {portionNumber > 1 && <button onClick={ () => {setPortionNumber(portionNumber - 1)}}>PREV</button>}

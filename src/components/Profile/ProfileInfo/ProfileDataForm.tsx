@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { InjectedFormProps, reduxForm } from 'redux-form'
 import { ContactsType } from '../../../types/type'
 import { createField, Input, Textarea } from '../../common/FormControls/FormControls'
-import { CreateFieldNamePropertiesType, ProfileDataReduxFormProps } from '../ProfileContainer'
+import { CreateFieldNamePropertiesType, ProfileDataReduxFormProps } from '../Profile'
 import Contact from './Contact'
 
 const Form: FC<InjectedFormProps<ProfileDataReduxFormProps, ProfileDataOwnProps> & ProfileDataOwnProps> = ({lookingForAJob, contacts, handleSubmit, error}) => {

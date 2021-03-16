@@ -1,36 +1,56 @@
 import React from 'react'
-import { UserType } from '../../types/type'
+import { useDispatch, useSelector } from 'react-redux'
+import { savePhotoThunk, updateUserStatusThunk } from '../../redux/profilePageReducer'
+import { getStatus, getUserProfile } from '../../redux/usersSelectors'
 import MyPostsContainer from './MyPosts/MyPostsContainer'
 import s from './Profile.module.css'
-import { ProfileDataReduxFormProps } from './ProfileContainer'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
 
 
 
-const Profile = (props: PropsTypes) => {
+
+export const Profile: React.FC<PropsTypes> = (props) => {
+
+    const user = useSelector(getUserProfile)
+    const status = useSelector(getStatus)
+
+    const dispatch = useDispatch()
+
+    const savePhoto = (file: File) => {
+        dispatch(savePhotoThunk(file))
+    }
+    // const saveProfileData = (profileData: ProfileDataReduxFormProps) => {
+    //     dispatch(saveProfileDataThunk(profileData))
+    // }
+    const updateStatus = (userStatus: string) => {
+        dispatch(updateUserStatusThunk(userStatus))
+    }
+
     return (
         <div className={s.content}>
             <ProfileInfo 
                 isOwner={props.isOwner} 
-                user={props.user} 
-                status={props.status} 
-                updateStatus={props.updateStatus}
-                savePhoto={props.savePhoto}
-                saveProfileData={props.saveProfileDataThunk} 
+                user={user} 
+                status={status} 
+                updateStatus={updateStatus}
+                savePhoto={savePhoto}
+                //saveProfileData={saveProfileData} 
             />
             <MyPostsContainer />
         </div>
     )
 }
 
-export default Profile
-
 
 type PropsTypes = {
     isOwner: boolean
-    user: UserType | null
-    status: string
-    updateStatus: (userStatus: string) => void
-    savePhoto: (file: File) => void
-    saveProfileDataThunk: (profileData: ProfileDataReduxFormProps) => Promise<{}>
 }
+
+export type ProfileDataReduxFormProps = {
+    fullName: string
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    aboutMe: string
+}
+
+export type CreateFieldNamePropertiesType = Extract<keyof ProfileDataReduxFormProps, string>

@@ -6,6 +6,8 @@ import usersPageReducer from "./usersPageReducer"
 import thunkMiddleware, { ThunkAction } from "redux-thunk"
 import { reducer as formReducer} from "redux-form"
 import appReducer from "./appReducer"
+import { useDispatch } from "react-redux"
+import chatReducer from "./chatReducer"
 
 
 
@@ -15,7 +17,8 @@ let rootReducer = combineReducers({
     usersPage: usersPageReducer,
     auth: authReducer,
     form: formReducer,
-    app: appReducer
+    app: appReducer,
+    chat: chatReducer
 })
 
 
@@ -38,3 +41,6 @@ type ProppertiesTypes<T> = T extends {[key: string]: infer U} ? U : never
 export type InfernActionTypes<T extends {[key: string]: (...arg: any[]) => any}> = ReturnType<ProppertiesTypes<T>>
 
 export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
+
+export type AppDispatch = typeof store.dispatch
+export const useAppDispatch = () => useDispatch<AppDispatch>()

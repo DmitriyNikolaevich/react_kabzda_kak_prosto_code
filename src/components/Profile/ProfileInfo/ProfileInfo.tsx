@@ -8,14 +8,20 @@ import ProfileDataForm from './ProfileDataForm'
 import { useState } from 'react'
 import EditModeButton from './EditModeButton'
 import { UserType } from '../../../types/type'
-import { ProfileDataReduxFormProps } from '../ProfileContainer'
+import { ProfileDataReduxFormProps } from '../Profile'
+import { useDispatch } from 'react-redux'
+import { saveProfileDataThunk } from '../../../redux/profilePageReducer'
 
 
 
 
-const ProfileInfo: React.FC<PropsTypes> = ({isOwner, user, status, updateStatus, savePhoto, saveProfileData}) => {
+const ProfileInfo: React.FC<PropsTypes> = ({isOwner, user, status, updateStatus, savePhoto}) => {
 
     const [editMode, editModeEditor] = useState(false)
+
+    const dispatch = useDispatch()
+
+
 
     const activateEditMode = () => {
         editModeEditor(true)
@@ -31,12 +37,8 @@ const ProfileInfo: React.FC<PropsTypes> = ({isOwner, user, status, updateStatus,
         }
     }
 
-    const onSubmit = (formData: ProfileDataReduxFormProps) => {
-        saveProfileData(formData).then(
-            () => {
-                deactivateEditMode()
-            }
-        )
+    const onSubmit = (formData: ProfileDataReduxFormProps, editModeEditor: any) => {
+        dispatch(saveProfileDataThunk(formData, editModeEditor))
     }
     
 
@@ -92,5 +94,5 @@ type PropsTypes = {
     status: string
     updateStatus: (userStatus: string) => void
     savePhoto: (file: File) => void
-    saveProfileData: (profileData: ProfileDataReduxFormProps) => Promise<any>
+    //saveProfileData: (profileData: ProfileDataReduxFormProps) => Promise<any>
 }

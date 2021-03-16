@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Paginator from '../common/Paginator/Paginator'
 import User from './User'
 import UserSearchForm from './Search/UserSearchForm'
-import { FilterType, getUsers } from '../../redux/usersPageReducer'
+import { FilterType, followThunk, getUsers, unfollowThunk } from '../../redux/usersPageReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCurrentPage, getPageSize, getProgress, getTotalUsersCount, getUserFilter, getUsersSelector } from '../../redux/usersSelectors'
 
@@ -20,7 +20,7 @@ export const Users: React.FC<PropsType> = (props) => {
 
     useEffect(() => {
         dispatch(getUsers(currentPage, pageSize, ""))
-    }, [])
+    }, [currentPage, pageSize, dispatch])
 
 
     const onPageChenged = (pageNumber: number) => {
@@ -31,11 +31,11 @@ export const Users: React.FC<PropsType> = (props) => {
         dispatch(getUsers(1, pageSize, filter.term))
     }
 
-    const unfollowThunk = (usersID: number) => {
+    const unfollow = (usersID: number) => {
         dispatch(unfollowThunk(usersID))
     }
 
-    const followThunk = (usersID: number) => {
+    const follow = (usersID: number) => {
         dispatch(followThunk(usersID))
     }
 
@@ -44,8 +44,8 @@ export const Users: React.FC<PropsType> = (props) => {
             <UserSearchForm onFilterChange={onFilterChange} />
         </div>
         <Paginator onPageChenged={onPageChenged} currentPage={currentPage} totalItemsCount={totalUsersCount} pageSize={pageSize} />
-        {users.map(u => <User followThunk={followThunk}
-            unfollowThunk={unfollowThunk}
+        {users.map(u => <User followThunk={follow}
+            unfollowThunk={unfollow}
             progress={progress}
             u={u}
             key={u.id}
