@@ -11,7 +11,7 @@ export enum ResultCodeForCaptchaEnum {
 
 
 export const instance = Axios.create({
-    withCredentials: true,
+    withCredentials: false,
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
     headers: {
         "API-KEY": "f747db5e-dcb5-4b79-a43c-812e564ac23b"
